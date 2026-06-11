@@ -1,0 +1,30 @@
+[
+  {
+    "slug": "zhengji-archive",
+    "name": "证迹 Archive",
+    "description": "个人成果证书管理平台 — Next.js 16 + TypeScript + Tailwind CSS",
+    "repo": "jacobhodges934-boop/zhengji-archive",
+    "apiUrl": "http://localhost:3001/api/monitor",
+    "repoUrl": "https://github.com/jacobhodges934-boop/zhengji-archive",
+    "localPath": "D:\\文档\\证迹Archive",
+    "devPort": 3001,
+    "devCommand": "npm exec next -- dev -p {port} --hostname 0.0.0.0",
+    "monitorPath": "/api/monitor"
+  },
+  {
+    "slug": "competition-platform",
+    "name": "竞赛交流平台",
+    "description": "学科竞赛信息交流社区",
+    "repo": "",
+    "apiUrl": null,
+    "repoUrl": ""
+  },
+  {
+    "slug": "continuous-claude-deepseek",
+    "name": "continuous-claude-deepseek",
+    "description": "DeepSeek 兼容版自主开发+自动merge的GitHub PR永动机",
+    "repo": "jacobhodges934-boop/continuous-claude-deepseek",
+    "apiUrl": null,
+    "repoUrl": "https://github.com/jacobhodges934-boop/continuous-claude-deepseek"
+  }
+]

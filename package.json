@@ -1,0 +1,23 @@
+{
+  "name": "dev-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-project continuous-claude development monitor dashboard",
+  "scripts": {
+    "dev": "next dev -p 3334",
+    "build": "next build",
+    "start": "next start -p 3334"
+  },
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
