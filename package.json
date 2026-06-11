@@ -4,7 +4,8 @@
   "private": true,
   "description": "Multi-project continuous-claude development monitor dashboard",
   "scripts": {
-    "dev": "next dev -p 3334",
+    "dev": "pwsh start.ps1",
+    "dev:monitor": "next dev -p 3334",
     "build": "next build",
     "start": "next start -p 3334"
   },
