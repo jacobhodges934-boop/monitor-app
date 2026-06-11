@@ -44,11 +44,22 @@ function Start-ProjectApp([string]$Path, [int]$Port, [string]$Name, [string]$Com
     }
 
     $command = $CommandTemplate.Replace("{port}", [string]$Port)
+
+    # 注入 GitHub Token（被监控项目可能用 gh CLI 或 API）
+    $ghToken = ""
+    try { $ghToken = gh auth token 2>$null } catch {}
+
+    $wrappedCommand = if ($ghToken) {
+        "`$env:GITHUB_TOKEN='$ghToken'; Set-Location `"$Path`"; $command"
+    } else {
+        "Set-Location `"$Path`"; $command"
+    }
+
     Start-Process -FilePath $PowerShellExe `
-        -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "Set-Location `"$Path`"; $command" `
+        -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", $wrappedCommand `
         -WindowStyle Hidden
 
-    Write-Host "  Starting $Name on port $Port..." -ForegroundColor Green
+    Write-Host "  Starting $Name on port $Port... $(if ($ghToken) { '(with GH token)' } else { '(no GH token)' })" -ForegroundColor Green
 }
 
 # ─── Phase 1: 自动启动所有被监控项目 ───
