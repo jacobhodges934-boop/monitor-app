@@ -154,13 +154,21 @@ export default function ProjectDetail() {
 
   // --- Data loaded ---
   if (!data) return null;
-  const taskPct = data.tasks.total > 0 ? Math.round((data.tasks.done / data.tasks.total) * 100) : 0;
+
+  // Defensive defaults for potentially missing fields
+  const prs = data.prs || { open: [], merged: [] };
+  const tasks = data.tasks || { done: 0, total: 0, remaining: [] };
+  const cost = data.cost || { total_cny: "0", total_usd: "0", last_cny: "0", last_usd: "0", iterations: 0, currency: "" };
+  const build = data.build || { status: "unknown" };
+  const status = data.status || "healthy";
+
+  const taskPct = tasks.total > 0 ? Math.round((tasks.done / tasks.total) * 100) : 0;
   const statusLabel =
-    data.status === "error" ? "故障" : data.status === "warning" ? "警告" : "健康";
+    status === "error" ? "故障" : status === "warning" ? "警告" : "健康";
   const statusColor =
-    data.status === "error"
+    status === "error"
       ? "var(--color-error)"
-      : data.status === "warning"
+      : status === "warning"
       ? "var(--color-warning)"
       : "var(--color-success)";
 
@@ -233,10 +241,10 @@ export default function ProjectDetail() {
 
       {/* Metric cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <MetricCard label="GitHub 待合并 PR" english="Open PRs" value={data.prs.open.length} color="var(--color-text)" />
-        <MetricCard label="本地任务清单进度" english="Local Tasks Done" value={`${data.tasks.done}/${data.tasks.total}`} color="var(--color-text)" />
-        <MetricCard label="运行轮次" english="Iterations" value={data.cost.iterations} color="var(--color-accent)" />
-        <MetricCard label="累计花费" english="Total Cost" value={`¥${data.cost.total_cny}`} sub={`≈ $${data.cost.total_usd}`} color="var(--color-success)" />
+        <MetricCard label="GitHub 待合并 PR" english="Open PRs" value={prs.open.length} color="var(--color-text)" />
+        <MetricCard label="本地任务清单进度" english="Local Tasks Done" value={`${tasks.done}/${tasks.total}`} color="var(--color-text)" />
+        <MetricCard label="运行轮次" english="Iterations" value={cost.iterations} color="var(--color-accent)" />
+        <MetricCard label="累计花费" english="Total Cost" value={`¥${cost.total_cny}`} sub={`≈ $${cost.total_usd}`} color="var(--color-success)" />
       </div>
 
       {/* Progress bar */}
@@ -259,8 +267,8 @@ export default function ProjectDetail() {
         <div className="flex flex-wrap gap-2 mt-3">
           <Tag label={`分支 / Branch: ${data.branch}`} />
           <Tag label={data.dirty ? "有未提交改动 / Dirty" : "工作区干净 / Clean"} accent={data.dirty} />
-          <Tag label={`构建 / Build: ${data.build.status}`} accent={data.build.status === "failure"} />
-          <Tag label={`最近花费 / Last: ¥${data.cost.last_cny || "0"}`} />
+          <Tag label={`构建 / Build: ${build.status}`} accent={build.status === "failure"} />
+          <Tag label={`最近花费 / Last: ¥${cost.last_cny || "0"}`} />
           <Tag label={data.gh_token_configured ? "GitHub 已配置 / Ready" : "GitHub 未配置，PR/CI 可能不完整 / Missing"} accent={!data.gh_token_configured} />
         </div>
       </div>
@@ -270,13 +278,13 @@ export default function ProjectDetail() {
         <PRSection
           title="GitHub 待合并 PR / Open PRs"
           color="var(--color-warning)"
-          prs={data.prs.open}
+          prs={prs.open}
           emptyText="暂无待处理 PR / No open PRs"
         />
         <PRSection
           title="最近合并 / Recently Merged"
           color="var(--color-success)"
-          prs={data.prs.merged}
+          prs={prs.merged}
           emptyText="暂无已合并 PR / No merged PRs"
         />
       </div>
@@ -287,13 +295,13 @@ export default function ProjectDetail() {
         style={{ background: "var(--color-surface)", borderColor: "var(--color-border)" }}
       >
         <h3 className="font-semibold mb-3" style={{ color: "var(--color-text)" }}>
-          剩余任务 / Remaining Tasks ({data.tasks.remaining.length})
+          剩余任务 / Remaining Tasks ({tasks.remaining.length})
         </h3>
-        {data.tasks.remaining.length === 0 ? (
+        {tasks.remaining.length === 0 ? (
           <p style={{ color: "var(--color-success)" }}>✓ 全部完成!</p>
         ) : (
           <ul className="space-y-1.5 list-none p-0 m-0">
-            {data.tasks.remaining.map((t, i) => (
+            {tasks.remaining.map((t, i) => (
               <li
                 key={i}
                 className="text-sm flex items-start gap-2"
