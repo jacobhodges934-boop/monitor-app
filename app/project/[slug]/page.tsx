@@ -282,7 +282,7 @@ export default function ProjectDetail() {
           emptyText="暂无待处理 PR / No open PRs"
         />
         <PRSection
-          title="最近合并 / Recently Merged"
+          title="最近合并（最多 10 个）/ Recently Merged"
           color="var(--color-success)"
           prs={prs.merged}
           emptyText="暂无已合并 PR / No merged PRs"

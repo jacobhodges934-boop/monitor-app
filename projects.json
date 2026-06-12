@@ -4,10 +4,10 @@
     "name": "证迹 Archive",
     "description": "个人成果证书管理平台 — Next.js 16 + TypeScript + Tailwind CSS",
     "repo": "jacobhodges934-boop/zhengji-archive",
-    "apiUrl": "http://localhost:3001/api/monitor",
+    "apiUrl": "http://localhost:3000/api/monitor",
     "repoUrl": "https://github.com/jacobhodges934-boop/zhengji-archive",
     "localPath": "D:\\文档\\证迹Archive",
-    "devPort": 3001,
+    "devPort": 3000,
     "devCommand": "npm exec next -- dev -p {port} --hostname 0.0.0.0",
     "monitorPath": "/api/monitor"
   },
